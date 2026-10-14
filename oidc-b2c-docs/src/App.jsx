@@ -16,6 +16,9 @@ export default function App() {
 
   useEffect(() => {
     document.title = `${page.title} | iNextLabs OIDC Docs`;
+    if (window.location.hash === '#top') {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [activeId, page.title]);
 
@@ -41,7 +44,7 @@ export default function App() {
     <Topbar search={search} setSearch={setSearch} activeAudience={activeAudience} setActiveAudience={setActiveAudience} onMenu={() => setMobileOpen(v => !v)} mobileOpen={mobileOpen}/>
     {search.trim() && <div className="search-results-popover"><div className="search-results-title"><Search size={15}/> Search results <span>{navigation.flatMap(g => g.items).filter(item => `${item.title} ${pages[item.id]?.title} ${pages[item.id]?.subtitle} ${pages[item.id]?.sections?.map(s => `${s.title} ${s.body || ''} ${(s.bullets || []).join(' ')} ${(s.steps || []).flat().join(' ')}`).join(' ')}`.toLowerCase().includes(search.toLowerCase())).length}</span></div><div className="search-results-list">{navigation.flatMap(g => g.items.map(item => ({...item, group: g.group}))).filter(item => `${item.title} ${item.group} ${pages[item.id]?.title} ${pages[item.id]?.subtitle} ${pages[item.id]?.sections?.map(s => `${s.title} ${s.body || ''} ${(s.bullets || []).join(' ')} ${(s.steps || []).flat().join(' ')}`).join(' ')}`.toLowerCase().includes(search.toLowerCase())).slice(0, 12).map(item => <button key={item.id} onClick={() => {selectPage(item.id); setSearch('');}}><span className="result-title">{item.title}</span><span className="result-group">{item.group}</span></button>)}{!navigation.flatMap(g => g.items).some(item => `${item.title} ${pages[item.id]?.title} ${pages[item.id]?.subtitle} ${pages[item.id]?.sections?.map(s => `${s.title} ${s.body || ''}`).join(' ')}`.toLowerCase().includes(search.toLowerCase())) && <div className="search-empty">No matching pages found.</div>}</div></div>}
     <div className="layout-grid">
-      <Sidebar activeId={activeId} onSelect={selectPage} search={search} setSearch={setSearch} mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)}/>
+      <Sidebar activeId={activeId} onSelect={selectPage} search={search} setSearch={setSearch} mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} activeAudience={activeAudience}/>
       <main className="main-column"><DocContent pageId={activeId} onSelect={selectPage} activeAudience={activeAudience}/></main>
       <RightToc sections={page.sections} activeId={activeId}/>
     </div>

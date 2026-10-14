@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ChevronDown, ChevronRight, Search, BookOpen, PanelLeftClose } from 'lucide-react';
 import { navigation, pages } from '../data/docs';
 
-export default function Sidebar({ activeId, onSelect, search, setSearch, mobileOpen, onClose }) {
+export default function Sidebar({ activeId, onSelect, search, setSearch, mobileOpen, onClose, activeAudience }) {
   const [collapsed, setCollapsed] = useState({});
   const query = search.trim().toLowerCase();
   const filtered = navigation.map(group => ({ ...group, items: group.items.filter(item => {
@@ -25,7 +25,11 @@ export default function Sidebar({ activeId, onSelect, search, setSearch, mobileO
         </section>)}
         {filtered.length === 0 && <div className="no-results">No pages found. Try another search.</div>}
       </nav>
-      <div className="sidebar-footer"><span className="footer-dot"/> Internal engineering guide <span className="footer-version">v1.0</span></div>
+      <div className="sidebar-footer">
+        <span className="footer-dot"/>
+        {activeAudience === 'client' ? 'Client integration guide' : 'Internal engineering guide'}
+        <span className="footer-version">v1.0</span>
+      </div>
     </aside>
   </>;
 }

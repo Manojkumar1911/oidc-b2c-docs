@@ -47,8 +47,14 @@ export default function DocContent({ pageId, onSelect, activeAudience }) {
     <div className="breadcrumbs"><span>Documentation</span><ChevronRight size={14}/><span>{page.eyebrow || 'GUIDE'}</span></div>
     <div className="page-title-row"><div><span className="eyebrow">{page.eyebrow || 'GUIDE'}</span><h1>{page.title}</h1></div><button className="copy-page-button" onClick={copyPage}>{copiedPage ? <Check size={15}/> : <Copy size={15}/>}<span>{copiedPage ? 'Copied' : 'Copy page'}</span></button></div>
     {page.subtitle && <p className="page-subtitle">{page.subtitle}</p>}
-    {page.updated && <div className="page-meta"><span className="internal-badge">Internal Only</span><span>{page.updated}</span></div>}
-    {activeAudience === 'client' && <Callout tone="info" label="Client Docs view" body="This content is currently the internal engineering guide. Before publishing a client-facing version, remove internal implementation details, tenant-specific values, and internal-only troubleshooting."/>}
+    {page.updated && (
+      <div className="page-meta">
+        <span className={activeAudience === 'client' ? 'client-badge' : 'internal-badge'}>
+          {activeAudience === 'client' ? 'Client Facing' : 'Internal Only'}
+        </span>
+        <span>{activeAudience === 'client' ? 'Client integration guide · v1.0' : page.updated}</span>
+      </div>
+    )}
     <div className="title-divider"/>
     {pageId === 'checklist' && <div className="checklist-progress"><ListChecks size={16}/><span>{checklistTotal} items checked</span><div className="progress-track"><div style={{width: `${Math.min(100, checklistTotal / 19 * 100)}%`}}/></div></div>}
     {page.sections.map(section => <Section key={section.id} section={section} checklistState={checklistState} setChecklistState={setChecklistState}/>)}
@@ -56,6 +62,6 @@ export default function DocContent({ pageId, onSelect, activeAudience }) {
       {previous ? <button className="page-nav-card prev" onClick={() => onSelect(previous.id)}><span><ChevronLeft size={15}/> Previous</span><strong>{previous.title}</strong></button> : <div/>}
       {next ? <button className="page-nav-card next" onClick={() => onSelect(next.id)}><span>Next <ChevronRight size={15}/></span><strong>{next.title}</strong></button> : <div/>}
     </div>
-    <footer className="doc-footer"><span>© iNextLabs · Internal engineering documentation</span><a href="https://learn.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-generic-openid-connect" target="_blank" rel="noreferrer">Verify against Microsoft Learn <ExternalLink size={13}/></a></footer>
+    <footer className="doc-footer"><span>© iNextLabs · {activeAudience === 'client' ? 'Client integration documentation' : 'Internal engineering documentation'}</span><a href="https://learn.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-generic-openid-connect" target="_blank" rel="noreferrer">Verify against Microsoft Learn <ExternalLink size={13}/></a></footer>
   </article>;
 }

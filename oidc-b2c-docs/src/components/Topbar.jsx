@@ -3,8 +3,8 @@ import { BookOpenText, Search, Github, Menu, X, Command, ChevronDown } from 'luc
 export default function Topbar({ search, setSearch, activeAudience, setActiveAudience, onMenu, mobileOpen }) {
   return <header className="topbar">
     <button className="icon-button mobile-menu" aria-label="Toggle navigation" onClick={onMenu}>{mobileOpen ? <X size={19}/> : <Menu size={19}/>}</button>
-    <a className="brand" href="#top" aria-label="iNextLabs documentation home">
-      <img src="/images/inextlabs-logo-NtEQwFAf.png" alt="iNextLabs" className="brand-logo" />
+    <a className="brand" href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} aria-label="iNextLabs documentation home">
+      <img src={`${import.meta.env.BASE_URL}images/inextlabs-logo-NtEQwFAf.png`} alt="iNextLabs" className="brand-logo" />
       <span className="brand-divider" />
       <strong>OIDC Configuration Docs</strong>
     </a>
